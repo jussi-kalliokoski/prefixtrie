@@ -96,6 +96,15 @@ func Test(t *testing.T) {
 			t.Fatal("expected results slice to be appended")
 		}
 	})
+
+	t.Run("partial match", func(t *testing.T) {
+		var trie prefixtrie.Trie
+		trie.Add("1234567", 1)
+		results := trie.Find(nil, "1245")
+		if len(results) != 0 {
+			t.Fatalf("expected len() %d, got %d", 0, len(results))
+		}
+	})
 }
 
 func Example() {

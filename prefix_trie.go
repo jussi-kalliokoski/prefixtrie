@@ -8,7 +8,6 @@
 package prefixtrie
 
 import (
-	"strings"
 	"unicode/utf8"
 )
 
@@ -71,9 +70,14 @@ func (n *node) add(key string, value int) {
 }
 
 func (n node) find(dst []int, prefix string) []int {
-	if strings.HasPrefix(n.prefix, prefix) {
+	commonPrefix := n.commonPrefix(n.prefix, prefix)
+	if len(commonPrefix) == len(prefix) {
 		// match found
 		return n.collectValues(dst)
+	}
+	if len(commonPrefix) < len(n.prefix) {
+		// not a match
+		return dst
 	}
 	// binary search for the child with matching first rune of prefix
 	// adapted and inlined from sort.Search
